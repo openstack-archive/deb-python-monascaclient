@@ -3,7 +3,7 @@ python-monascaclient (1.0.30+dfsg1-1) experimental; urgency=medium
   * Now using git based workflow, and not using pybuild:
     - Based on the upstream git tag 1.0.30, adding +dfsg1 because removing
       their debian folder.
-    - build-depends on openstack-pkg-tools 46~.
+    - build-depends on openstack-pkg-tools 48~.
     - Rewrote debian/rules
   * Added a watch file.
   * Fixed wrong maintainer script names for update-alternatives, the old
