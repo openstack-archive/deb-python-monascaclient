@@ -1,0 +1,113 @@
+Source: python-monascaclient
+Section: python
+Priority: optional
+Maintainer: PKG OpenStack <openstack-devel@lists.alioth.debian.org>
+Uploaders: James Page <james.page@ubuntu.com>,
+           Thomas Goirand <zigo@debian.org>,
+Build-Depends: debhelper (>= 9~),
+               dh-python,
+               openstack-pkg-tools (>= 46~),
+               python-all,
+               python-pbr (>= 1.8),
+               python-setuptools,
+               python-sphinx,
+               python3-all,
+               python3-pbr (>= 1.8),
+               python3-setuptools,
+Build-Depends-Indep: python-babel,
+                     python-coverage,
+                     python-fixtures (>= 1.3.1),
+                     python-hacking (>= 0.10.0),
+                     python-iso8601,
+                     python-keystoneclient (>= 1:1.6.0),
+                     python-mock (>= 1.3),
+                     python-mox3 (>= 0.7.0),
+                     python-oslo.concurrency,
+                     python-oslo.config,
+                     python-oslo.i18n (>= 2.1.0),
+                     python-oslo.log,
+                     python-oslo.middleware,
+                     python-oslo.serialization (>= 1.10.0),
+                     python-oslo.service,
+                     python-oslo.utils (>= 3.5.0),
+                     python-oslosphinx (>= 2.5.0),
+                     python-prettytable,
+                     python-six (>= 1.9.0),
+                     python-testscenarios (>= 0.4),
+                     python-testtools (>= 1.4.0),
+                     python-yaml,
+                     python3-babel,
+                     python3-fixtures (>= 1.3.1),
+                     python3-iso8601,
+                     python3-keystoneclient (>= 1:1.6.0),
+                     python3-mock (>= 1.3),
+                     python3-mox3 (>= 0.7.0),
+                     python3-oslo.concurrency,
+                     python3-oslo.config,
+                     python3-oslo.i18n (>= 2.1.0),
+                     python3-oslo.log,
+                     python3-oslo.middleware,
+                     python3-oslo.serialization (>= 1.10.0),
+                     python3-oslo.service,
+                     python3-oslo.utils (>= 3.5.0),
+                     python3-prettytable,
+                     python3-six (>= 1.9.0),
+                     python3-testscenarios (>= 0.4),
+                     python3-testtools (>= 1.4.0),
+                     python3-yaml,
+Standards-Version: 3.9.8
+Homepage: https://github.com/openstack/python-monascaclient
+Vcs-Git: git://anonscm.debian.org/openstack/python-monascaclient.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=openstack/python-monascaclient.git
+
+Package: python-monascaclient
+Architecture: all
+Depends: python-babel,
+         python-iso8601,
+         python-keystoneclient (>= 1:1.6.0),
+         python-oslo.concurrency,
+         python-oslo.config,
+         python-oslo.i18n (>= 2.1.0),
+         python-oslo.log,
+         python-oslo.middleware,
+         python-oslo.serialization (>= 1.10.0),
+         python-oslo.service,
+         python-oslo.utils (>= 3.5.0),
+         python-prettytable,
+         python-six (>= 1.9.0),
+         python-yaml,
+         ${misc:Depends},
+         ${python:Depends},
+Description: Python bindings for the Monasca API
+ Monasca is a open-source multi-tenant, highly scalable, performant,
+ fault-tolerant monitoring-as-a-service solution that integrates with
+ OpenStack. It uses a REST API for high-speed metrics processing and
+ querying and has a streaming alarm engine and notification engine.
+ .
+ This package provides the Python 2 API bindings.
+
+Package: python3-monascaclient
+Architecture: all
+Depends: python3-babel,
+         python3-iso8601,
+         python3-keystoneclient (>= 1:1.6.0),
+         python3-oslo.concurrency,
+         python3-oslo.config,
+         python3-oslo.i18n (>= 2.1.0),
+         python3-oslo.log,
+         python3-oslo.middleware,
+         python3-oslo.serialization (>= 1.10.0),
+         python3-oslo.service,
+         python3-oslo.utils (>= 3.5.0),
+         python3-prettytable,
+         python3-six (>= 1.9.0),
+         python3-yaml,
+         ${misc:Depends},
+         ${python3:Depends},
+Description: Python bindings for the Monasca API
+ Monasca is a open-source multi-tenant, highly scalable, performant,
+ fault-tolerant monitoring-as-a-service solution that integrates with
+ OpenStack. It uses a REST API for high-speed metrics processing and
+ querying and has a streaming alarm engine and notification engine.
+ .
+ This package provides the Python 3 API bindings.

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "remove" ] ; then
+	update-alternatives --remove monasca /usr/bin/python2-monasca
+fi
+
+#DEBHELPER#
+
+exit 0

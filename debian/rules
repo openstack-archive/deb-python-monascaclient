@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+
+UPSTREAM_GIT = git://github.com/openstack/python-monascaclient.git
+include /usr/share/openstack-pkg-tools/pkgos.make
+
+%:
+	dh $@ --with python2,python3 --buildsystem=python_distutils
+
+override_dh_auto_install:
+	pkgos-dh_auto_install
+
+override_dh_auto_test:
+ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
+	pkgos-dh_auto_test
+endif
+
+override_dh_install:
+	dh_install
+	rm -f $(CURDIR)/debian/python*-monascaclient/usr/share/monasca.bash_completion
+
+override_dh_clean:
+	rm -rf build
