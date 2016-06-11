@@ -1,6 +1,7 @@
 python-monascaclient (1.0.30+dfsg1-2) experimental; urgency=medium
 
   * Do not run dh_auto_clean.
+  * Added missing build-depends-indep: testrepository and subunit.
 
  -- Thomas Goirand <zigo@debian.org>  Sat, 11 Jun 2016 19:14:45 +0200
 

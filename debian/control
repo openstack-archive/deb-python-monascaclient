@@ -52,9 +52,12 @@ Build-Depends-Indep: python-babel,
                      python3-oslo.utils (>= 3.5.0),
                      python3-prettytable,
                      python3-six (>= 1.9.0),
+                     python3-subunit,
                      python3-testscenarios (>= 0.4),
                      python3-testtools (>= 1.4.0),
                      python3-yaml,
+                     subunit,
+                     testrepository,
 Standards-Version: 3.9.8
 Homepage: https://github.com/openstack/python-monascaclient
 Vcs-Git: https://anonscm.debian.org/git/openstack/python-monascaclient.git
