@@ -19,6 +19,7 @@ override_dh_install:
 	rm -f $(CURDIR)/debian/python*-monascaclient/usr/share/monasca.bash_completion
 
 override_dh_clean:
+	dh_clean
 	rm -rf build
 
 override_dh_auto_clean:
