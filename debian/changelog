@@ -9,6 +9,7 @@ python-monascaclient (1.0.30+dfsg1-1) experimental; urgency=medium
   * Fixed wrong maintainer script names for update-alternatives, the old
     filenames made it not packaged at all.
   * Fixed duplicate short description.
+  * Fixed debian/copyright ordering.
 
  -- Thomas Goirand <zigo@debian.org>  Fri, 10 Jun 2016 21:38:22 +0200
 

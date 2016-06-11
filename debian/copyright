@@ -3,10 +3,6 @@ Upstream-Name: python-monascaclient
 Source: https://github.com/openstack/python-monasacaclient
 Files-Excluded: debian
 
-Files: debian/*
-Copyright: Canonical Ltd (http://www.canonical.com)
-License: Apache-2
-
 Files: *
 Copyright: 2014-2016 Hewlett Packard Enterprise Development Company LP,
            2011-2013 OpenStack Foundation,
@@ -19,6 +15,11 @@ Copyright: 2014-2016 Hewlett Packard Enterprise Development Company LP,
            2012 Red Hat Inc,
            2013 Alessio Ababilov,
            2011 Nebula, Inc,
+License: Apache-2
+
+Files: debian/*
+Copyright: (c) 2016, Canonical Ltd (http://www.canonical.com)
+           (c) 2016, Thomas Goirand <zigo@debian.org>
 License: Apache-2
 
 License: Apache-2
