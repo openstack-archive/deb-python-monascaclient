@@ -10,6 +10,7 @@ python-monascaclient (1.0.30+dfsg1-1) experimental; urgency=medium
     filenames made it not packaged at all.
   * Fixed duplicate short description.
   * Fixed debian/copyright ordering.
+  * Using HTTPS VCS URLs.
 
  -- Thomas Goirand <zigo@debian.org>  Fri, 10 Jun 2016 21:38:22 +0200
 
