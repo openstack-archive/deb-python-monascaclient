@@ -78,7 +78,7 @@ Depends: python-babel,
          python-yaml,
          ${misc:Depends},
          ${python:Depends},
-Description: client bindings for the Monasca API - python 2.7
+Description: client bindings for the Monasca API - Python 2.7
  Monasca is a open-source multi-tenant, highly scalable, performant,
  fault-tolerant monitoring-as-a-service solution that integrates with
  OpenStack. It uses a REST API for high-speed metrics processing and
