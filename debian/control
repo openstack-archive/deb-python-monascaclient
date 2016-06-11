@@ -6,7 +6,7 @@ Uploaders: James Page <james.page@ubuntu.com>,
            Thomas Goirand <zigo@debian.org>,
 Build-Depends: debhelper (>= 9~),
                dh-python,
-               openstack-pkg-tools (>= 49~),
+               openstack-pkg-tools (>= 50~),
                python-all,
                python-pbr (>= 1.8),
                python-setuptools,
@@ -78,13 +78,13 @@ Depends: python-babel,
          python-yaml,
          ${misc:Depends},
          ${python:Depends},
-Description: Python bindings for the Monasca API
+Description: client bindings for the Monasca API - python 2.7
  Monasca is a open-source multi-tenant, highly scalable, performant,
  fault-tolerant monitoring-as-a-service solution that integrates with
  OpenStack. It uses a REST API for high-speed metrics processing and
  querying and has a streaming alarm engine and notification engine.
  .
- This package provides the Python 2 API bindings.
+ This package provides the Python 2.7 API bindings.
 
 Package: python3-monascaclient
 Architecture: all
@@ -104,10 +104,10 @@ Depends: python3-babel,
          python3-yaml,
          ${misc:Depends},
          ${python3:Depends},
-Description: Python bindings for the Monasca API
+Description: client bindings for the Monasca API - Python 3.x
  Monasca is a open-source multi-tenant, highly scalable, performant,
  fault-tolerant monitoring-as-a-service solution that integrates with
  OpenStack. It uses a REST API for high-speed metrics processing and
  querying and has a streaming alarm engine and notification engine.
  .
- This package provides the Python 3 API bindings.
+ This package provides the Python 3.x API bindings.
