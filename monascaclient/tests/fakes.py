@@ -14,8 +14,7 @@
 # limitations under the License.
 
 from keystoneclient.v3 import client as ksclient
-
-from monascaclient.openstack.common import jsonutils
+from oslo_serialization import jsonutils
 
 
 def script_keystone_client(token=None):
@@ -41,13 +40,13 @@ def fake_headers():
             'User-Agent': 'python-monascaclient'}
 
 
-class FakeServiceCatalog():
+class FakeServiceCatalog(object):
 
     def url_for(self, endpoint_type, service_type):
         return 'http://192.168.1.5:8004/v1/f14b41234'
 
 
-class FakeKeystone():
+class FakeKeystone(object):
     service_catalog = FakeServiceCatalog()
 
     def __init__(self, auth_token, project_id):
@@ -55,11 +54,11 @@ class FakeKeystone():
         self.project_id = project_id
 
 
-class FakeRaw():
+class FakeRaw(object):
     version = 110
 
 
-class FakeHTTPResponse():
+class FakeHTTPResponse(object):
 
     version = 1.1
 

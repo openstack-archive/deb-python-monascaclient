@@ -22,11 +22,13 @@ import textwrap
 import uuid
 
 import prettytable
+import six
 import yaml
 
 from monascaclient import exc
-from monascaclient.openstack.common import importutils
-from monascaclient.openstack.common import jsonutils
+
+from oslo_serialization import jsonutils
+from oslo_utils import importutils
 
 supported_formats = {
     "json": lambda x: jsonutils.dumps(x, indent=2),
@@ -289,6 +291,6 @@ def set_env_variables(kwargs):
         'domain_name': 'OS_DOMAIN_NAME',
         'region_name': 'OS_REGION_NAME'
     }
-    for k, v in environment_variables.iteritems():
+    for k, v in six.iteritems(environment_variables):
         if k not in kwargs:
             kwargs[k] = env(v)

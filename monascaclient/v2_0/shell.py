@@ -21,8 +21,9 @@ import time
 
 from monascaclient.common import utils
 import monascaclient.exc as exc
-from monascaclient.openstack.common import jsonutils
 
+from oslo_serialization import jsonutils
+from six.moves import xrange
 
 # Alarm valid types
 severity_types = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
@@ -31,8 +32,12 @@ enabled_types = ['True', 'true', 'False', 'false']
 group_by_types = ['alarm_definition_id', 'name', 'state', 'severity',
                   'link', 'lifecycle_state', 'metric_name',
                   'dimension_name', 'dimension_value']
-allowed_alarm_sort_by = {'alarm_id', 'alarm_definition_id', 'state', 'severity', 'lifecycle_state', 'link',
-                         'state_updated_timestamp', 'updated_timestamp', 'created_timestamp'}
+allowed_notification_sort_by = {'id', 'name', 'type', 'address', 'created_at', 'updated_at'}
+allowed_alarm_sort_by = {'alarm_id', 'alarm_definition_id',
+                         'alarm_definition_name', 'state', 'severity',
+                         'lifecycle_state', 'link',
+                         'state_updated_timestamp', 'updated_timestamp',
+                         'created_timestamp'}
 allowed_definition_sort_by = {'id', 'name', 'severity', 'updated_at', 'created_at'}
 
 # Notification valid types
@@ -104,6 +109,47 @@ def do_metric_create_raw(mc, args):
         print('Successfully created metric')
 
 
+@utils.arg('--dimensions', metavar='<KEY1=VALUE1,KEY2=VALUE2...>',
+           help='key value pair used to specify a metric dimension. '
+           'This can be specified multiple times, or once with parameters '
+           'separated by a comma. '
+           'Dimensions need quoting when they contain special chars [&,(,),{,},>,<] '
+           'that confuse the CLI parser.',
+           action='append')
+@utils.arg('--offset', metavar='<OFFSET LOCATION>',
+           help='The offset used to paginate the return data.')
+@utils.arg('--limit', metavar='<RETURN LIMIT>',
+           help='The amount of data to be returned up to the API maximum limit.')
+@utils.arg('--tenant-id', metavar='<TENANT_ID>',
+           help="Retrieve data for the specified tenant/project id instead of "
+                "the tenant/project from the user's Keystone credentials.")
+def do_metric_name_list(mc, args):
+    '''List names of metrics.'''
+    fields = {}
+    if args.dimensions:
+        fields['dimensions'] = utils.format_dimensions_query(args.dimensions)
+    if args.limit:
+        fields['limit'] = args.limit
+    if args.offset:
+        fields['offset'] = args.offset
+    if args.tenant_id:
+        fields['tenant_id'] = args.tenant_id
+
+    try:
+        metric_names = mc.metrics.list_names(**fields)
+    except exc.HTTPException as he:
+        raise exc.CommandError(
+            'HTTPException code=%s message=%s' %
+            (he.code, he.message))
+
+    if args.json:
+        print(utils.json_formatter(metric_names))
+        return
+
+    if isinstance(metric_names, list):
+        utils.print_list(metric_names, ['Name'], formatters={'Name': lambda x: x['name']})
+
+
 @utils.arg('--name', metavar='<METRIC_NAME>',
            help='Name of the metric to list.')
 @utils.arg('--dimensions', metavar='<KEY1=VALUE1,KEY2=VALUE2...>',
@@ -121,6 +167,9 @@ def do_metric_create_raw(mc, args):
            help='The offset used to paginate the return data.')
 @utils.arg('--limit', metavar='<RETURN LIMIT>',
            help='The amount of data to be returned up to the API maximum limit.')
+@utils.arg('--tenant-id', metavar='<TENANT_ID>',
+           help="Retrieve data for the specified tenant/project id instead of "
+                "the tenant/project from the user's Keystone credentials.")
 def do_metric_list(mc, args):
     '''List metrics for this tenant.'''
     fields = {}
@@ -137,6 +186,8 @@ def do_metric_list(mc, args):
         fields['start_time'] = args.starttime
     if args.endtime:
         fields['end_time'] = args.endtime
+    if args.tenant_id:
+        fields['tenant_id'] = args.tenant_id
 
     try:
         metric = mc.metrics.list(**fields)
@@ -269,6 +320,11 @@ def format_metric_dimensions(metrics):
 @utils.arg('--merge_metrics', action='store_const',
            const=True,
            help='Merge multiple metrics into a single result.')
+@utils.arg('--group_by', metavar='<KEY1,KEY2,...>',
+           help='Select which keys to use for grouping. A \'*\' groups by all keys.')
+@utils.arg('--tenant-id', metavar='<TENANT_ID>',
+           help="Retrieve data for the specified tenant/project id instead of "
+                "the tenant/project from the user's Keystone credentials.")
 def do_measurement_list(mc, args):
     '''List measurements for the specified metric.'''
     fields = {}
@@ -286,6 +342,10 @@ def do_measurement_list(mc, args):
         fields['offset'] = args.offset
     if args.merge_metrics:
         fields['merge_metrics'] = args.merge_metrics
+    if args.group_by:
+        fields['group_by'] = args.group_by
+    if args.tenant_id:
+        fields['tenant_id'] = args.tenant_id
 
     try:
         metric = mc.metrics.list_measurements(**fields)
@@ -343,6 +403,11 @@ def do_measurement_list(mc, args):
 @utils.arg('--merge_metrics', action='store_const',
            const=True,
            help='Merge multiple metrics into a single result.')
+@utils.arg('--group_by', metavar='<KEY1,KEY2,...>',
+           help='Select which keys to use for grouping. A \'*\' groups by all keys.')
+@utils.arg('--tenant-id', metavar='<TENANT_ID>',
+           help="Retrieve data for the specified tenant/project id instead of "
+                "the tenant/project from the user's Keystone credentials.")
 def do_metric_statistics(mc, args):
     '''List measurement statistics for the specified metric.'''
     statistic_types = ['AVG', 'MIN', 'MAX', 'COUNT', 'SUM']
@@ -370,6 +435,10 @@ def do_metric_statistics(mc, args):
         fields['offset'] = args.offset
     if args.merge_metrics:
         fields['merge_metrics'] = args.merge_metrics
+    if args.group_by:
+        fields['group_by'] = args.group_by
+    if args.tenant_id:
+        fields['tenant_id'] = args.tenant_id
 
     try:
         metric = mc.metrics.list_statistics(**fields)
@@ -421,12 +490,21 @@ def do_metric_statistics(mc, args):
                 formatters=formatters)
 
 
+def _validate_notification_period(period, notification_type):
+    if notification_type != 'WEBHOOK' and period != 0:
+        print("Invalid period, can only be non zero for webhooks")
+        return False
+    return True
+
+
 @utils.arg('name', metavar='<NOTIFICATION_NAME>',
            help='Name of the notification to create.')
 @utils.arg('type', metavar='<TYPE>',
            help='The notification type. Type must be EMAIL, WEBHOOK, or PAGERDUTY.')
 @utils.arg('address', metavar='<ADDRESS>',
            help='A valid EMAIL Address, URL, or SERVICE KEY.')
+@utils.arg('--period', metavar='<PERIOD>', type=int, default=0,
+           help='A period for the notification method. Can only be non zero with webhooks')
 def do_notification_create(mc, args):
     '''Create notification.'''
     if args.type.upper() not in notification_types:
@@ -438,6 +516,10 @@ def do_notification_create(mc, args):
     fields['name'] = args.name
     fields['type'] = args.type
     fields['address'] = args.address
+    if args.period:
+        if not _validate_notification_period(args.period, args.type.upper()):
+            return
+        fields['period'] = args.period
     try:
         notification = mc.notifications.create(**fields)
     except exc.HTTPException as he:
@@ -469,11 +551,17 @@ def do_notification_show(mc, args):
             'id': utils.json_formatter,
             'type': utils.json_formatter,
             'address': utils.json_formatter,
+            'period': utils.json_formatter,
             'links': utils.format_dictlist,
         }
         utils.print_dict(notification, formatters=formatters)
 
 
+@utils.arg('--sort-by', metavar='<SORT BY FIELDS>',
+           help='Fields to sort by as a comma separated list. Valid values are id, '
+                'name, type, address, created_at, updated_at. '
+                'Fields may be followed by "asc" or "desc", ex "address desc", '
+                'to set the direction of sorting.')
 @utils.arg('--offset', metavar='<OFFSET LOCATION>',
            help='The offset used to paginate the return data.')
 @utils.arg('--limit', metavar='<RETURN LIMIT>',
@@ -485,6 +573,19 @@ def do_notification_list(mc, args):
         fields['limit'] = args.limit
     if args.offset:
         fields['offset'] = args.offset
+    if args.sort_by:
+        sort_by = args.sort_by.split(',')
+        for field in sort_by:
+            field_values = field.lower().split()
+            if len(field_values) > 2:
+                print("Invalid sort_by value {}".format(field))
+            if field_values[0] not in allowed_notification_sort_by:
+                print("Sort-by field name {} is not in [{}]".format(field_values[0],
+                                                                    allowed_notification_sort_by))
+                return
+            if len(field_values) > 1 and field_values[1] not in ['asc', 'desc']:
+                print("Invalid value {}, must be asc or desc".format(field_values[1]))
+        fields['sort_by'] = args.sort_by
 
     try:
         notification = mc.notifications.list(**fields)
@@ -496,12 +597,13 @@ def do_notification_list(mc, args):
         if args.json:
             print(utils.json_formatter(notification))
             return
-        cols = ['name', 'id', 'type', 'address']
+        cols = ['name', 'id', 'type', 'address', 'period']
         formatters = {
             'name': lambda x: x['name'],
             'id': lambda x: x['id'],
             'type': lambda x: x['type'],
             'address': lambda x: x['address'],
+            'period': lambda x: x['period'],
         }
         if isinstance(notification, list):
 
@@ -539,6 +641,8 @@ def do_notification_delete(mc, args):
            help='The notification type. Type must be either EMAIL, WEBHOOK, or PAGERDUTY.')
 @utils.arg('address', metavar='<ADDRESS>',
            help='A valid EMAIL Address, URL, or SERVICE KEY.')
+@utils.arg('period', metavar='<PERIOD>', type=int,
+           help='A period for the notification method. Can only be non zero with webhooks')
 def do_notification_update(mc, args):
     '''Update notification.'''
     fields = {}
@@ -551,6 +655,9 @@ def do_notification_update(mc, args):
         return
     fields['type'] = args.type
     fields['address'] = args.address
+    if not _validate_notification_period(args.period, args.type.upper()):
+        return
+    fields['period'] = args.period
     try:
         notification = mc.notifications.update(**fields)
     except exc.HTTPException as he:
@@ -578,8 +685,9 @@ def _validate_severity(severity):
            help='The alarm expression to evaluate. Quoted.')
 @utils.arg('--severity', metavar='<SEVERITY>',
            help='Severity is one of [LOW, MEDIUM, HIGH, CRITICAL].')
-@utils.arg('--match-by', metavar='<DIMENSION_KEY1,DIMENSION_KEY2,...>',
-           help='The metric dimensions to match to the alarm dimensions. '
+@utils.arg('--match-by', metavar='<MATCH_BY_DIMENSION_KEY1,MATCH_BY_DIMENSION_KEY2,'
+                                 '...>',
+           help='The metric dimensions to use to create unique alarms. '
            'One or more dimension key names separated by a comma. '
            'Key names need quoting when they contain special chars [&,(,),{,},>,<] '
            'that confuse the CLI parser.')
@@ -671,7 +779,7 @@ def do_alarm_definition_show(mc, args):
            help='Severity is one of ["LOW", "MEDIUM", "HIGH", "CRITICAL"].')
 @utils.arg('--sort-by', metavar='<SORT BY FIELDS>',
            help='Fields to sort by as a comma separated list. Valid values are id, '
-                'name, severity, updated_timestamp, created_timestamp. '
+                'name, severity, created_at, updated_at. '
                 'Fields may be followed by "asc" or "desc", ex "severity desc", '
                 'to set the direction of sorting.')
 @utils.arg('--offset', metavar='<OFFSET LOCATION>',
@@ -769,8 +877,8 @@ def do_alarm_definition_delete(mc, args):
                 'as a comma separated list.')
 @utils.arg('actions_enabled', metavar='<ACTIONS-ENABLED>',
            help='The actions-enabled boolean is one of [true,false]')
-@utils.arg('match_by', metavar='<DIMENSION_KEY1,DIMENSION_KEY2,...>',
-           help='The metric dimensions to match to the alarm dimensions. '
+@utils.arg('match_by', metavar='<MATCH_BY_DIMENSION_KEY1,MATCH_BY_DIMENSION_KEY2,...>',
+           help='The metric dimensions to use to create unique alarms. '
            'One or more dimension key names separated by a comma. '
            'Key names need quoting when they contain special chars [&,(,),{,},>,<] '
            'that confuse the CLI parser.')
@@ -783,17 +891,16 @@ def do_alarm_definition_update(mc, args):
     fields['name'] = args.name
     fields['description'] = args.description
     fields['expression'] = args.expression
-    fields['alarm_actions'] = args.alarm_actions.split(',')
-    fields['ok_actions'] = args.ok_actions.split(',')
-    fields['undetermined_actions'] = args.undetermined_actions.split(',')
+    fields['alarm_actions'] = _arg_split_patch_update(args.alarm_actions)
+    fields['ok_actions'] = _arg_split_patch_update(args.ok_actions)
+    fields['undetermined_actions'] = _arg_split_patch_update(args.undetermined_actions)
     if args.actions_enabled not in enabled_types:
         errmsg = 'Invalid value, not one of [' + \
             ', '.join(enabled_types) + ']'
         print(errmsg)
         return
     fields['actions_enabled'] = args.actions_enabled in ['true', 'True']
-    fields['match_by'] = args.match_by.split(',')
-
+    fields['match_by'] = _arg_split_patch_update(args.match_by)
     if not _validate_severity(args.severity):
         return
     fields['severity'] = args.severity
@@ -842,11 +949,11 @@ def do_alarm_definition_patch(mc, args):
     if args.expression:
         fields['expression'] = args.expression
     if args.alarm_actions:
-        fields['alarm_actions'] = args.alarm_actions
+        fields['alarm_actions'] = _arg_split_patch_update(args.alarm_actions, patch=True)
     if args.ok_actions:
-        fields['ok_actions'] = args.ok_actions
+        fields['ok_actions'] = _arg_split_patch_update(args.ok_actions, patch=True)
     if args.undetermined_actions:
-        fields['undetermined_actions'] = args.undetermined_actions
+        fields['undetermined_actions'] = _arg_split_patch_update(args.undetermined_actions, patch=True)
     if args.actions_enabled:
         if args.actions_enabled not in enabled_types:
             errmsg = 'Invalid value, not one of [' + \
@@ -1259,3 +1366,13 @@ def _translate_starttime(args):
         utc = str(datetime.datetime.utcfromtimestamp(deltaT))
         utc = utc.replace(" ", "T")[:-7] + 'Z'
         args.starttime = utc
+
+
+def _arg_split_patch_update(arg, patch=False):
+    if patch:
+        arg = ','.join(arg)
+    if not arg or arg == "[]":
+        arg_split = []
+    else:
+        arg_split = arg.split(',')
+    return arg_split
