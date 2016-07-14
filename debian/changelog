@@ -1,9 +1,13 @@
 python-monascaclient (1.2.0-1) UNRELEASED; urgency=medium
 
+  [ David Della Vecchia ]
   * New upstream release.
   * d/control: Align (build-)depends with upstream.
 
- -- David Della Vecchia <ddv@canonical.com>  Thu, 14 Jul 2016 11:07:08 -0400
+  [ Corey Bryant ]
+  * d/control: Bump min python-pbr to 1.8.
+
+ -- Corey Bryant <corey.bryant@canonical.com>  Thu, 14 Jul 2016 11:46:13 -0400
 
 python-monascaclient (1.0.30+dfsg1-2) experimental; urgency=medium
 
