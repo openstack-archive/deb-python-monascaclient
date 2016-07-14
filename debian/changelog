@@ -1,3 +1,9 @@
+python-monascaclient (1.2.0-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- David Della Vecchia <ddv@canonical.com>  Thu, 14 Jul 2016 11:07:08 -0400
+
 python-monascaclient (1.0.30+dfsg1-2) experimental; urgency=medium
 
   * Do not run dh_auto_clean.
