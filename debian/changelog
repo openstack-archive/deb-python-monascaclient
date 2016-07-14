@@ -1,6 +1,7 @@
 python-monascaclient (1.2.0-1) UNRELEASED; urgency=medium
 
   * New upstream release.
+  * d/control: Align (build-)depends with upstream.
 
  -- David Della Vecchia <ddv@canonical.com>  Thu, 14 Jul 2016 11:07:08 -0400
 
