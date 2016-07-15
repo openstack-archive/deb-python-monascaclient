@@ -1,4 +1,4 @@
-python-monascaclient (1.2.0-1) UNRELEASED; urgency=medium
+python-monascaclient (1.2.0-1) experimental; urgency=medium
 
   [ David Della Vecchia ]
   * New upstream release.
@@ -7,7 +7,7 @@ python-monascaclient (1.2.0-1) UNRELEASED; urgency=medium
   [ Corey Bryant ]
   * d/control: Bump min python-pbr to 1.8.
 
- -- Corey Bryant <corey.bryant@canonical.com>  Thu, 14 Jul 2016 11:46:13 -0400
+ -- Corey Bryant <corey.bryant@canonical.com>  Fri, 15 Jul 2016 17:44:20 +0000
 
 python-monascaclient (1.0.30+dfsg1-2) experimental; urgency=medium
 
