@@ -1,0 +1,10 @@
+Code-Review+1: Joe Keen <joe.keen@hpe.com>
+Code-Review+1: Craig Bryant <craig.bryant@hpe.com>
+Code-Review+2: Ryan Brandt <ryan.brandt@hpe.com>
+Workflow+1: Ryan Brandt <ryan.brandt@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 15 Jul 2016 23:01:14 +0000
+Reviewed-on: https://review.openstack.org/340290
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/master
