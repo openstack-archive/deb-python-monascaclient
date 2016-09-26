@@ -63,8 +63,8 @@ Build-Depends-Indep: python-babel (>= 1.3),
                      testrepository,
 Standards-Version: 3.9.8
 Homepage: https://github.com/openstack/python-monascaclient
-Vcs-Git: https://anonscm.debian.org/git/openstack/python-monascaclient.git
-Vcs-Browser: https://anonscm.debian.org/gitweb/?p=openstack/python-monascaclient.git
+Vcs-Git: https://git.openstack.org/openstack/deb-python-monascaclient -b debian/newton
+Vcs-Browser: https://git.openstack.org/cgit/openstack/deb-python-monascaclient?h=debian%2Fnewton
 
 Package: python-monascaclient
 Architecture: all
