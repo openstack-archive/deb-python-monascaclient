@@ -1,6 +1,7 @@
-python-monascaclient (1.2.0-2) UNRELEASED; urgency=medium
+python-monascaclient (1.2.0-2) unstable; urgency=medium
 
   [ Thomas Goirand ]
+  * Uploading to unstable.
   * Fixed missing EPOC in oslo.config (build-)depends.
 
   [ Ondřej Nový ]
