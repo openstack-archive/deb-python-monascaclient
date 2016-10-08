@@ -1,0 +1,10 @@
+Code-Review+2: Deklan Dieterly <deklan.dieterly@hpe.com>
+Code-Review+1: Ryan Brandt <ryan.brandt@hpe.com>
+Code-Review+2: Roland Hochmuth <roland.hochmuth@hp.com>
+Workflow+1: Roland Hochmuth <roland.hochmuth@hp.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 07 Oct 2016 20:38:14 +0000
+Reviewed-on: https://review.openstack.org/360736
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/master
