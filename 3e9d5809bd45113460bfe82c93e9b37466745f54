@@ -1,0 +1,10 @@
+Code-Review+1: Kaiyan Sheng <kaiyan.sheng@hpe.com>
+Code-Review+1: Craig Bryant <craig.bryant@hpe.com>
+Code-Review+2: Roland Hochmuth <roland.hochmuth@hp.com>
+Workflow+1: Roland Hochmuth <roland.hochmuth@hp.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 12 Oct 2016 15:02:09 +0000
+Reviewed-on: https://review.openstack.org/374781
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/stable/newton
