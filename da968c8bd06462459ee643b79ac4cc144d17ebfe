@@ -1,0 +1,9 @@
+Code-Review+1: Craig Bryant <craig.bryant@hpe.com>
+Code-Review+2: Tomasz Trębski <tomasz.trebski@ts.fujitsu.com>
+Workflow+1: Tomasz Trębski <tomasz.trebski@ts.fujitsu.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 18 Nov 2016 06:14:55 +0000
+Reviewed-on: https://review.openstack.org/378225
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/master
