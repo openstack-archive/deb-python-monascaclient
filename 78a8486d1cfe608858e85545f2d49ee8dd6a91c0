@@ -1,0 +1,12 @@
+Code-Review+1: Bradley Klein <bradley.klein@charter.com>
+Code-Review+1: Ryan Bak <ryan.bak@twcable.com>
+Code-Review+1: Ryan Brandt <ryan.brandt@hpe.com>
+Code-Review+1: Craig Bryant <craig.bryant@hpe.com>
+Code-Review+2: Roland Hochmuth <roland.hochmuth@hpe.com>
+Workflow+1: Roland Hochmuth <roland.hochmuth@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 09 Dec 2016 06:26:12 +0000
+Reviewed-on: https://review.openstack.org/395246
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/master
