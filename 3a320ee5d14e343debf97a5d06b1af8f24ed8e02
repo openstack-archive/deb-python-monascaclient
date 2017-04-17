@@ -1,0 +1,9 @@
+Code-Review+2: Witold Bedyk <witold.bedyk@est.fujitsu.com>
+Code-Review+1: Zhaokun Fu <fuzk@inspur.com>
+Workflow+1: Witold Bedyk <witold.bedyk@est.fujitsu.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 17 Apr 2017 10:17:41 +0000
+Reviewed-on: https://review.openstack.org/453173
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/master
