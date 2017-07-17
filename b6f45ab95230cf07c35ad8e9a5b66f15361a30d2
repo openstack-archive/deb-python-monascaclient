@@ -1,0 +1,9 @@
+Code-Review+1: Joe Keen <joe.keen@hpe.com>
+Code-Review+2: Tomasz Trębski <tomasz.trebski@ts.fujitsu.com>
+Workflow+1: Tomasz Trębski <tomasz.trebski@ts.fujitsu.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 17 Jul 2017 05:29:55 +0000
+Reviewed-on: https://review.openstack.org/401966
+Project: openstack/deb-python-monascaclient
+Branch: refs/heads/stable/newton
